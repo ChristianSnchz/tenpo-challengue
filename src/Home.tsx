@@ -16,40 +16,6 @@ const Container = styled.View`
   flex: 1;
 `;
 
-const TouchBar = styled.View`
-  padding: 20px;
-  background-color: #fff;
-  width: 210px;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
-  margin-bottom: 10px;
-`;
-
-const Center = styled.View`
-  align-items: center;
-`;
-
-const Row = styled.View<{ justify?: string; marginTop?: number }>`
-  flex-direction: row;
-  justify-content: ${(props) => props.justify || "flex-start"};
-  margin-top: ${(props) => props.marginTop || 0}px;
-  align-items: center;
-  padding: 0 18px;
-`;
-
-const Title = styled.Text<{ color?: string; size?: number; spacing?: number }>`
-  font-size: ${(props) => props.size || 40}px;
-  font-weight: bold;
-  color: ${(props) => props.color || "#000"};
-  letter-spacing: ${(props) => props.spacing || 0}px;
-`;
-
-const Img = styled.Image`
-  position: absolute;
-  width: 200px;
-  right: -15px;
-`;
-
 const ContainerFood = styled.View`
   flex: 1;
   background-color: white;
