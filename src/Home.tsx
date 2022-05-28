@@ -24,7 +24,6 @@ const ContainerFood = styled.View`
   margin-top: -40px;
   padding: 25px;
 `;
-
 //#endregion
 
 
@@ -40,7 +39,7 @@ const Home = () => {
     <ItemDetail {...item} />
   );
 
-  return (
+  return (    
     <ScrollView>
       <Container>  
         <HeaderHome/>

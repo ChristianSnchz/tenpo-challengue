@@ -2,6 +2,10 @@ import React from 'react'
 import styled from "styled-components/native";
 import { Image, View } from "react-native";
 
+const point = require("../../imgs/point.png");
+const moto = require("../../imgs/moto.png");
+const hand = require("../../imgs/hand.png");
+
 //#region styledComponents
 
 const Row = styled.View<{ justify?: string; marginTop?: number }>`
@@ -47,16 +51,16 @@ const SlideOne = () => {
     </View>
     <Image
       style={{ width: 200, resizeMode: "contain" }}
-      source={require("../../imgs/moto.png")}
+      source={moto}
     />
     <Img
       style={{ resizeMode: "contain" }}
-      source={require("../../imgs/hand.png")}
+      source={hand}
     />
-    <Point right={20} source={require("../../imgs/point.png")} />
-    <Point right={30} top={-30} source={require("../../imgs/point.png")} />
-    <Point right={160} top={-40} source={require("../../imgs/point.png")} />
-    <Point right={160} top={5} source={require("../../imgs/point.png")} />
+    <Point right={20} source={point} />
+    <Point right={30} top={-30} source={point} />
+    <Point right={160} top={-40} source={point} />
+    <Point right={160} top={5} source={point} />
   </Row>
   )
 }

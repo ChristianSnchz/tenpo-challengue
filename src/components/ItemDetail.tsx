@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components/native";
 import { Image, View } from "react-native";
 
+const star = require("../imgs/star.png")
+
 //#region StyledComponents
 const ContainerImage = styled.TouchableOpacity`
   width: 260px;
@@ -10,7 +12,7 @@ const ContainerImage = styled.TouchableOpacity`
 `;
 
 const ContainerInfo = styled.View`
-  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: -2px 8px 10px rgba(0, 0, 0, 0.2);
   elevation: 2;
 `;
 
@@ -80,7 +82,7 @@ const ItemDetail = ({ file, name, rate, time, promotion, logo }: Detail) => (
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Image
             style={{ width: 15, marginRight: 5, resizeMode: "contain" }}
-            source={require("../imgs/star.png")}
+            source={star}
           />
           <DetailFavorite>{rate}</DetailFavorite>
         </View>

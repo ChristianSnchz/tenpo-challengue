@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from "styled-components/native";
 import { Image } from "react-native";
-
+const img = require("../imgs/location.png")
 
 //#region styledComponents
 
@@ -37,7 +37,7 @@ const AdreesButton = () => {
     <Row marginTop={18}>
       <Image
         style={{ marginRight: 5, resizeMode: "contain" }}
-        source={require("../imgs/location.png")}
+        source={img}
       />
       <AddressText>Agregar direccion de entrega</AddressText>
     </Row>

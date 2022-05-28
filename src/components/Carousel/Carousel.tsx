@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Dimensions, View } from "react-native";
 import Carousel from "react-native-snap-carousel";
+import styled from "styled-components/native";
 import SlideOne from "./SlideOne";
 import SlideTwo from "./SlideTwo";
 
@@ -17,6 +18,13 @@ const data = [
   },
 ];
 
+
+const Container = styled.View`
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+`;
+
 export const CarouselComponent = () => {
   const carousel = useRef<Carousel<unknown> | null>(null);
   const { width: windowWidth } = Dimensions.get("window");
@@ -30,7 +38,7 @@ export const CarouselComponent = () => {
   };
 
   return (
-    <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
+    <Container>
       <Carousel
         loop={true}        
         ref={carousel}
@@ -40,7 +48,7 @@ export const CarouselComponent = () => {
         renderItem={(item: { item: any }) => renderSlide(item)}
         onSnapToItem={(index) => setindex(index)}
       />
-    </View>
+    </Container>
   );
 };
 

@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components/native";
 import { Image, View } from "react-native";
 
+const star = require("../imgs/star.png");
+
 //#region StyledComponents
 const ItemRestaurant = styled.TouchableOpacity`
   width: 115px;
@@ -75,7 +77,7 @@ const Item = ({ file, name, rate, time, promo }: Restaunrant) => (
     >
       <Image
         style={{ width: 15, marginRight: 5, resizeMode: "contain" }}
-        source={require("../imgs/star.png")}
+        source={star}
       />
       <DetailRest>
         {rate} {time}
