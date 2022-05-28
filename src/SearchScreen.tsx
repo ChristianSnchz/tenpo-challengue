@@ -68,9 +68,7 @@ const Map = styled.Image`
 const SearchScreen = () => {
   const navigation = useNavigation();
   const [search, setsearch] = useState<string>();
-
-  console.log(search, "HOLA");
-
+  
   return (
     <Wrapper>
       <Address>
