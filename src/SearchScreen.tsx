@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
+import MapView, { PROVIDER_GOOGLE,  } from "react-native-maps";
 import styled from "styled-components/native";
-import { Image } from "react-native";
+import { Text, Dimensions, Image } from "react-native";
 const img = require("./imgs/location.png");
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { PermissionesContext } from "./context/PermissionContext";
+import * as Location from "expo-location";
+import { useLocation } from "./hooks/useLocation";
+import { FloatingActionButtom } from "./components/FloatingActionButton";
 
 //#region styledComponents
-
 const Wrapper = styled.View`
   flex: 1;
 `;
@@ -39,7 +43,7 @@ const TextInput = styled.TextInput`
   z-index: 1;
 `;
 
-const Location = styled.View`
+const WrapperLocation = styled.View`
   background-color: white;
   flex: 1;
   justify-content: center;
@@ -58,17 +62,76 @@ const Backbutton = styled.TouchableOpacity`
   left: 10px;
 `;
 
-const Map = styled.Image`
+const MapContainer = styled(MapView as any)<{ Dimensions: any }>`
   flex: 1;
-  width: 100%;
+  width: ${({ Dimensions }) => Dimensions.get("window").width}px;
 `;
 
+const ButtonGeo = styled.TouchableOpacity`
+    margin-top: 10px;
+    padding: 20px;
+    background-color: #00baa4;    
+    color: white;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    border-radius: 30px;
+`;
+
+const TextGeo = styled.Text`
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+`;
 //#endregion
 
 const SearchScreen = () => {
   const navigation = useNavigation();
+  const mapViewRef = useRef<MapView>();
+  const follow = useRef(true);
   const [search, setsearch] = useState<string>();
+  const [showMap, setshowMap] = useState(false);
+  const { checkLocationPermision, permissions, askLocationPermision } =
+    useContext(PermissionesContext);
+
+  useEffect(() => {
+    checkLocationPermision();
+  }, []);
+
+  useEffect(() => {    
+    if (permissions.locationStatus === Location.PermissionStatus.GRANTED) {
+      centerPosition();      
+      setshowMap(true);
+    }
+  }, [permissions.locationStatus])
   
+
+  const {    
+    initialPosition,
+    getCurrentLocation,    
+  } = useLocation();
+
+  const centerPosition = async () => {
+    const {
+        coords: { latitude, longitude },
+    } = await getCurrentLocation();
+    follow.current = true;
+    mapViewRef.current?.animateCamera({
+        center: {
+            latitude,
+            longitude,
+        },
+    });
+};
+
+  const handleMap = () => {
+    console.log(permissions.locationStatus, "PERMISO");
+    if (permissions.locationStatus === Location.PermissionStatus.GRANTED) {
+      setshowMap(true);
+      centerPosition();      
+    } else askLocationPermision();
+  };
+
   return (
     <Wrapper>
       <Address>
@@ -85,17 +148,35 @@ const SearchScreen = () => {
         value={search}
         placeholder="Escribe tu direccion"
       />
-      <Location>
-        {search ? (
-          <Map
-            source={{
-              uri: "https://www.google.com/maps/d/thumbnail?mid=1y0bdR4xPdrO3mVTQffBz9s30Q2s&hl=es",
-            }}
-          />
+      <WrapperLocation>
+        {showMap ? (
+          <>          
+            <MapContainer
+              ref={(el: any) => (mapViewRef.current = el!)}
+              provider={PROVIDER_GOOGLE}
+              Dimensions={Dimensions}
+              showsUserLocation
+              initialRegion={{
+                latitude: initialPosition.latitude,
+                longitude: initialPosition.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+              onTouchStart={() => (follow.current = false)}
+            />
+            <FloatingActionButtom onPress={centerPosition} />
+          </>
         ) : (
-          <LocationText>Esperando tu ubicacion...</LocationText>
+          <>
+            <LocationText>Esperando tu ubicacion...</LocationText>
+            <ButtonGeo
+              onPress={handleMap}                            
+            >
+              <TextGeo>Geolocalizarme</TextGeo>
+            </ButtonGeo>
+          </>
         )}
-      </Location>
+      </WrapperLocation>
       <Backbutton onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back-outline" size={24} color="black" />
       </Backbutton>
