@@ -1,0 +1,32 @@
+name: Pull Request Template Selector
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  select-template:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR template checkbox
+        run: |
+          sed -i 's/\(<!-- select-.* -->\)\(.*\)\(<!-- end-select -->\)/\1\3/g' $GITHUB_EVENT_PATH
+        shell: bash
+      - name: Check PR template choice
+        id: check_choice
+        run: |
+          grep -q "<!-- select-bugfix -->" $GITHUB_EVENT_PATH && echo "hotfix" || true
+          grep -q "<!-- select-feature -->" $GITHUB_EVENT_PATH && echo "new-feature" || true
+          grep -q "<!-- select-small-change -->" $GITHUB_EVENT_PATH && echo "small-change" || true
+        shell: bash
+      - name: Update PR template
+        if: steps.check_choice.outputs != {}
+        run: |
+          if [ "${{ steps.check_choice.outputs }}" == "hotfix" ]; then
+            cat .github/template-bugfix.md > .github/pull_request_template.md
+          elif [ "${{ steps.check_choice.outputs }}" == "new-feature" ]; then
+            cat .github/template-feature.md > .github/pull_request_template.md
+          elif [ "${{ steps.check_choice.outputs }}" == "small-change" ]; then
+            cat .github/template-small-change.md > .github/pull_request_template.md
+          fi
+        shell: bash
