@@ -9,8 +9,6 @@ const Address = styled.View`
   background-color: #d4f9f5;
   height: 100px;
   border-top-left-radius: 50px;
-  border-top-right-radius: 50px;
-  align-items: center;
 `;
 
 const Row = styled.View<{ justify?: string; marginTop?: number }>`
